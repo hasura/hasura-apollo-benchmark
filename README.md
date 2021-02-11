@@ -38,7 +38,7 @@ Setup:
 - Hasura: Single instance v1.2
 - Apollo: 16x load-balanced instances
 
-> Note: Attempting to run higher req/s may cause Node V8 to segfault from large JSON responses returned and serialized + served as web response I/O
+> Note: Attempting to run higher req/s may cause Apollo to segfault from large JSON responses returned and serialized + served as web response I/O
 
 ```
 =============================================
