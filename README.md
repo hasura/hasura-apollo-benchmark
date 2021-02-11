@@ -1,4 +1,4 @@
-# Hasura vs Apollo Server & Prisma 2 Benchmark
+# Hasura vs Apollo Server & Knex Benchmark
 
 **Instructions:**
 
@@ -47,7 +47,7 @@ The `body` is JWT Encoded but the contents can be read by pasting into jwt.io wi
 
 ```
 =============================================
-[Platform: Apollo & Prisma]
+[Platform: Apollo & Knex]
 [Query: albums_tracks_genre_all]
 Requests      [total, rate, throughput]         500, 100.20, 0.14
 Duration      [total, attack, wait]             34.99s, 4.99s, 30s
@@ -99,7 +99,7 @@ Bucket           #    %       Histogram
 [125ms,  200ms]  0    0.00%
 [200ms,  +Inf]   0    0.00%
 =============================================
-[Platform: Apollo & Prisma]
+[Platform: Apollo & Knex]
 [Query: albums_tracks_genre_some]
 Requests      [total, rate, throughput]         150, 30.20, 30.11
 Duration      [total, attack, wait]             4.982s, 4.967s, 15.223ms
@@ -149,7 +149,7 @@ Bucket           #    %       Histogram
 [125ms,  200ms]  0    0.00%
 [200ms,  +Inf]   0    0.00%
 =============================================
-[Platform: Apollo & Prisma]
+[Platform: Apollo & Knex]
 [Query: artists_collaboration]
 Requests      [total, rate, throughput]         150, 30.20, 30.17
 Duration      [total, attack, wait]             4.971s, 4.967s, 4.621ms
@@ -199,7 +199,7 @@ Bucket           #    %       Histogram
 [125ms,  200ms]  0    0.00%
 [200ms,  +Inf]   0    0.00%
 =============================================
-[Platform: Apollo & Prisma]
+[Platform: Apollo & Knex]
 [Query: tracks_media_all]
 Requests      [total, rate, throughput]         500, 100.20, 0.11
 Duration      [total, attack, wait]             34.99s, 4.99s, 30s
@@ -250,7 +250,7 @@ Bucket           #    %       Histogram
 [125ms,  200ms]  0    0.00%
 [200ms,  +Inf]   0    0.00%
 =============================================
-[Platform: Apollo & Prisma]
+[Platform: Apollo & Knex]
 [Query: tracks_media_some]
 Requests      [total, rate, throughput]         500, 100.20, 94.85
 Duration      [total, attack, wait]             5.272s, 4.99s, 281.92ms
@@ -300,7 +300,7 @@ Bucket           #    %       Histogram
 [125ms,  200ms]  0    0.00%
 [200ms,  +Inf]   0    0.00%
 =============================================
-[Platform: Apollo & Prisma]
+[Platform: Apollo & Knex]
 [Query: artist_by_id]
 Requests      [total, rate, throughput]         500, 100.20, 100.15
 Duration      [total, attack, wait]             4.993s, 4.99s, 2.74ms
