@@ -1,0 +1,3 @@
+{
+  "query": "query albums_tracks_genre_all { album { albumid title tracks { trackid name genre { name } } } }"
+}

@@ -1,0 +1,3 @@
+{
+  "query": "query albums_tracks_genre_some { album(where: { artistid: { _eq: 127 } }) { albumid  title  tracks { trackid name genre { name }  }  } }"
+}

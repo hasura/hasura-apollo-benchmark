@@ -1,0 +1,2 @@
+POST http://localhost:8080/v1/graphql
+@./queries/albums_tracks_genre_all/hasura.json

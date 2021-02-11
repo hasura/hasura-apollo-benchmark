@@ -1,0 +1,16 @@
+{
+  "config": {
+    "url": "http://localhost:8082/graphl",
+    "name": "Apollo + Knex",
+    "selectedQueries": ["artists_collaboration", "artist_by_id"],
+    "queryFile": true,
+    "withMutations": false,
+    "duration": 5,
+    "arrivalRate": 10,
+    "withOutput": true,
+    "headers": {
+      "Authorization": "<TOKEN>",
+      "Cookie": "name=value; name2=value2;"
+    }
+  }
+}

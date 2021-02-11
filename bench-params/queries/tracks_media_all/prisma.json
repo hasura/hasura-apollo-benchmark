@@ -1,0 +1,3 @@
+{
+  "query": "query tracks_media_all {track {trackid name mediatype {name} } }"
+}

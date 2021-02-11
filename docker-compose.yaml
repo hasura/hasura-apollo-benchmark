@@ -1,0 +1,39 @@
+version: '3.6'
+services:
+  postgres:
+    build: postgres-with-pgloader
+    restart: always
+    ports:
+      - 5430:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+  graphql-engine:
+    build: hasura
+    ports:
+      - '8080:8080'
+    depends_on:
+      - 'postgres'
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      HASURA_GRAPHQL_ENABLE_CONSOLE: 'true' # set to "false" to disable console
+      ## uncomment next line to set an admin secret
+      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+  apollo-prisma:
+    build: apollo-prisma
+    volumes:
+      - ./apollo-prisma:/usr/src/app
+      - /usr/src/app/node_modules # Remove this if you have pure JS dependencies
+    ports:
+      - '8081:4000'
+  apollo-knex:
+    build: apollo-knex
+    volumes:
+      - ./apollo-knex:/usr/src/app
+      - /usr/src/app/node_modules # Remove this if you have pure JS dependencies
+    ports:
+      - '8082:4000'
+volumes:
+  db_data:

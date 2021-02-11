@@ -1,0 +1,13 @@
+query {
+  album {
+    albumid
+    title
+    tracks {
+      trackid
+      name
+      genre {
+        name
+      }
+    }
+  }
+}

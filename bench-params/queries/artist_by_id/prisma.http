@@ -1,0 +1,2 @@
+POST http://localhost:8081/graphql
+@./queries/artist_by_id/prisma.json

@@ -1,0 +1,537 @@
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="http://ionicabizau.github.io/CaiuSS/caiuss.min.css"
+    />
+  </head>
+  <body>
+    <h3>Benchmark Charts (100/rps)</h3>
+    <li>
+      <a href="albums_tracks_genre_all.html">Albums + Tracks + Genres All</a>
+    </li>
+    <li>
+      <a href="albums_tracks_genre_some.html">Albums + Genres Some</a>
+    </li>
+    <li>
+      <a href="artists_collaboration.html">Artist Collaboration</a>
+    </li>
+    <li>
+      <a href="tracks_media_all.html">Tracks + Media All</a>
+    </li>
+    <li>
+      <a href="tracks_media_some.html">Tracks + Media Some</a>
+    </li>
+    <li>
+      <a href="tracks_media_some.html">Artist By Id</a>
+    </li>
+    <h3>Report</h3>
+    <pre>
+=============================================
+[Platform: Apollo & Prisma]
+[Query: albums_tracks_genre_all]
+Requests      [total, rate, throughput]         500, 100.20, 0.14
+Duration      [total, attack, wait]             34.99s, 4.99s, 30s
+Latencies     [min, mean, 50, 90, 95, 99, max]  7.169s, 29.782s, 30s, 30s, 30s, 30.002s, 30.003s
+Bytes In      [total, mean]                     1318550, 2637.10
+Bytes Out     [total, mean]                     570, 1.14
+Success       [ratio]                           1.00%
+Status Codes  [code:count]                      0:495  200:5  
+Error Set:
+net/http: request canceled (Client.Timeout exceeded while reading body)
+Post http://localhost:8081/graphql: net/http: request canceled (Client.Timeout exceeded while awaiting headers)
+=============================================
+Bucket           #    %        Histogram
+[0s,     2ms]    0    0.00%    
+[2ms,    4ms]    0    0.00%    
+[4ms,    6ms]    0    0.00%    
+[6ms,    8ms]    0    0.00%    
+[8ms,    10ms]   0    0.00%    
+[10ms,   15ms]   0    0.00%    
+[15ms,   20ms]   0    0.00%    
+[20ms,   40ms]   0    0.00%    
+[40ms,   80ms]   0    0.00%    
+[80ms,   125ms]  0    0.00%    
+[125ms,  200ms]  0    0.00%    
+[200ms,  +Inf]   500  100.00%  ###########################################################################
+=============================================
+[Platform: Hasura]
+[Query: albums_tracks_genre_all]
+Requests      [total, rate, throughput]         500, 100.20, 99.99
+Duration      [total, attack, wait]             5.001s, 4.99s, 10.758ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  9.704ms, 11.046ms, 10.689ms, 12.37ms, 14.185ms, 15.354ms, 21.15ms
+Bytes In      [total, mean]                     133605500, 267211.00
+Bytes Out     [total, mean]                     57000, 114.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:500  
+Error Set:
+=============================================
+Bucket           #    %       Histogram
+[0s,     2ms]    0    0.00%   
+[2ms,    4ms]    0    0.00%   
+[4ms,    6ms]    0    0.00%   
+[6ms,    8ms]    0    0.00%   
+[8ms,    10ms]   60   12.00%  #########
+[10ms,   15ms]   433  86.60%  ################################################################
+[15ms,   20ms]   6    1.20%   
+[20ms,   40ms]   1    0.20%   
+[40ms,   80ms]   0    0.00%   
+[80ms,   125ms]  0    0.00%   
+[125ms,  200ms]  0    0.00%   
+[200ms,  +Inf]   0    0.00%   
+=============================================
+[Platform: Apollo & Prisma]
+[Query: albums_tracks_genre_some]
+Requests      [total, rate, throughput]         150, 30.20, 30.11
+Duration      [total, attack, wait]             4.982s, 4.967s, 15.223ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  12.256ms, 22.425ms, 15.323ms, 33.579ms, 48.945ms, 159.844ms, 189.38ms
+Bytes In      [total, mean]                     533100, 3554.00
+Bytes Out     [total, mean]                     16500, 110.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:150  
+Error Set:
+=============================================
+Bucket           #   %       Histogram
+[0s,     2ms]    0   0.00%   
+[2ms,    4ms]    0   0.00%   
+[4ms,    6ms]    0   0.00%   
+[6ms,    8ms]    0   0.00%   
+[8ms,    10ms]   0   0.00%   
+[10ms,   15ms]   70  46.67%  ###################################
+[15ms,   20ms]   44  29.33%  ######################
+[20ms,   40ms]   26  17.33%  #############
+[40ms,   80ms]   5   3.33%   ##
+[80ms,   125ms]  3   2.00%   #
+[125ms,  200ms]  2   1.33%   #
+[200ms,  +Inf]   0   0.00%   
+=============================================
+[Platform: Hasura]
+[Query: albums_tracks_genre_some]
+Requests      [total, rate, throughput]         500, 100.20, 100.16
+Duration      [total, attack, wait]             4.992s, 4.99s, 2.118ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  824.376µs, 1.87ms, 1.802ms, 2.775ms, 3.933ms, 5.754ms, 10.412ms
+Bytes In      [total, mean]                     1790500, 3581.00
+Bytes Out     [total, mean]                     77000, 154.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:500  
+Error Set:
+=============================================
+Bucket           #    %       Histogram
+[0s,     2ms]    362  72.40%  ######################################################
+[2ms,    4ms]    113  22.60%  ################
+[4ms,    6ms]    24   4.80%   ###
+[6ms,    8ms]    0    0.00%   
+[8ms,    10ms]   0    0.00%   
+[10ms,   15ms]   1    0.20%   
+[15ms,   20ms]   0    0.00%   
+[20ms,   40ms]   0    0.00%   
+[40ms,   80ms]   0    0.00%   
+[80ms,   125ms]  0    0.00%   
+[125ms,  200ms]  0    0.00%   
+[200ms,  +Inf]   0    0.00%   
+=============================================
+[Platform: Apollo & Prisma]
+[Query: artists_collaboration]
+Requests      [total, rate, throughput]         150, 30.20, 30.17
+Duration      [total, attack, wait]             4.971s, 4.967s, 4.621ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  3.217ms, 6.085ms, 4.763ms, 10.561ms, 11.09ms, 16.415ms, 32.305ms
+Bytes In      [total, mean]                     53550, 357.00
+Bytes Out     [total, mean]                     13350, 89.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:150  
+Error Set:
+=============================================
+Bucket           #   %       Histogram
+[0s,     2ms]    0   0.00%   
+[2ms,    4ms]    35  23.33%  #################
+[4ms,    6ms]    67  44.67%  #################################
+[6ms,    8ms]    15  10.00%  #######
+[8ms,    10ms]   15  10.00%  #######
+[10ms,   15ms]   15  10.00%  #######
+[15ms,   20ms]   2   1.33%   #
+[20ms,   40ms]   1   0.67%   
+[40ms,   80ms]   0   0.00%   
+[80ms,   125ms]  0   0.00%   
+[125ms,  200ms]  0   0.00%   
+[200ms,  +Inf]   0   0.00%   
+=============================================
+[Platform: Hasura]
+[Query: artists_collaboration]
+Requests      [total, rate, throughput]         500, 100.20, 100.17
+Duration      [total, attack, wait]             4.991s, 4.99s, 1.302ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  996.824µs, 1.498ms, 1.301ms, 2.188ms, 2.651ms, 3.88ms, 4.469ms
+Bytes In      [total, mean]                     172500, 345.00
+Bytes Out     [total, mean]                     89500, 179.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:500  
+Error Set:
+=============================================
+Bucket           #    %       Histogram
+[0s,     2ms]    445  89.00%  ##################################################################
+[2ms,    4ms]    50   10.00%  #######
+[4ms,    6ms]    5    1.00%   
+[6ms,    8ms]    0    0.00%   
+[8ms,    10ms]   0    0.00%   
+[10ms,   15ms]   0    0.00%   
+[15ms,   20ms]   0    0.00%   
+[20ms,   40ms]   0    0.00%   
+[40ms,   80ms]   0    0.00%   
+[80ms,   125ms]  0    0.00%   
+[125ms,  200ms]  0    0.00%   
+[200ms,  +Inf]   0    0.00%   
+=============================================
+[Platform: Apollo & Prisma]
+[Query: tracks_media_all]
+Requests      [total, rate, throughput]         500, 100.20, 0.11
+Duration      [total, attack, wait]             34.99s, 4.99s, 30s
+Latencies     [min, mean, 50, 90, 95, 99, max]  1.913s, 29.776s, 30s, 30s, 30s, 30s, 30.005s
+Bytes In      [total, mean]                     1163612, 2327.22
+Bytes Out     [total, mean]                     328, 0.66
+Success       [ratio]                           0.80%
+Status Codes  [code:count]                      0:496  200:4  
+Error Set:
+Post http://localhost:8081/graphql: net/http: request canceled (Client.Timeout exceeded while awaiting headers)
+=============================================
+Bucket           #    %        Histogram
+[0s,     2ms]    0    0.00%    
+[2ms,    4ms]    0    0.00%    
+[4ms,    6ms]    0    0.00%    
+[6ms,    8ms]    0    0.00%    
+[8ms,    10ms]   0    0.00%    
+[10ms,   15ms]   0    0.00%    
+[15ms,   20ms]   0    0.00%    
+[20ms,   40ms]   0    0.00%    
+[40ms,   80ms]   0    0.00%    
+[80ms,   125ms]  0    0.00%    
+[125ms,  200ms]  0    0.00%    
+[200ms,  +Inf]   500  100.00%  ###########################################################################
+=============================================
+[Platform: Hasura]
+[Query: tracks_media_all]
+Requests      [total, rate, throughput]         500, 100.20, 100.01
+Duration      [total, attack, wait]             5s, 4.99s, 9.594ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  8.139ms, 12.931ms, 11.458ms, 18.532ms, 20.969ms, 28.793ms, 42.598ms
+Bytes In      [total, mean]                     147202000, 294404.00
+Bytes Out     [total, mean]                     41000, 82.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:500  
+Error Set:
+=============================================
+Bucket           #    %       Histogram
+[0s,     2ms]    0    0.00%   
+[2ms,    4ms]    0    0.00%   
+[4ms,    6ms]    0    0.00%   
+[6ms,    8ms]    0    0.00%   
+[8ms,    10ms]   138  27.60%  ####################
+[10ms,   15ms]   241  48.20%  ####################################
+[15ms,   20ms]   88   17.60%  #############
+[20ms,   40ms]   32   6.40%   ####
+[40ms,   80ms]   1    0.20%   
+[80ms,   125ms]  0    0.00%   
+[125ms,  200ms]  0    0.00%   
+[200ms,  +Inf]   0    0.00%   
+=============================================
+[Platform: Apollo & Prisma]
+[Query: tracks_media_some]
+Requests      [total, rate, throughput]         500, 100.20, 94.85
+Duration      [total, attack, wait]             5.272s, 4.99s, 281.92ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  39.978ms, 450.96ms, 459.866ms, 678.401ms, 720.788ms, 787.893ms, 837.117ms
+Bytes In      [total, mean]                     1805000, 3610.00
+Bytes Out     [total, mean]                     61000, 122.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:500  
+Error Set:
+=============================================
+Bucket           #    %       Histogram
+[0s,     2ms]    0    0.00%   
+[2ms,    4ms]    0    0.00%   
+[4ms,    6ms]    0    0.00%   
+[6ms,    8ms]    0    0.00%   
+[8ms,    10ms]   0    0.00%   
+[10ms,   15ms]   0    0.00%   
+[15ms,   20ms]   0    0.00%   
+[20ms,   40ms]   1    0.20%   
+[40ms,   80ms]   13   2.60%   #
+[80ms,   125ms]  8    1.60%   #
+[125ms,  200ms]  30   6.00%   ####
+[200ms,  +Inf]   448  89.60%  ###################################################################
+=============================================
+[Platform: Hasura]
+[Query: tracks_media_some]
+Requests      [total, rate, throughput]         500, 100.20, 100.16
+Duration      [total, attack, wait]             4.992s, 4.99s, 2.283ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  1.205ms, 2.289ms, 1.961ms, 3.66ms, 4.521ms, 6.955ms, 11.491ms
+Bytes In      [total, mean]                     1811000, 3622.00
+Bytes Out     [total, mean]                     76500, 153.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:500  
+Error Set:
+=============================================
+Bucket           #    %       Histogram
+[0s,     2ms]    257  51.40%  ######################################
+[2ms,    4ms]    200  40.00%  ##############################
+[4ms,    6ms]    30   6.00%   ####
+[6ms,    8ms]    12   2.40%   #
+[8ms,    10ms]   0    0.00%   
+[10ms,   15ms]   1    0.20%   
+[15ms,   20ms]   0    0.00%   
+[20ms,   40ms]   0    0.00%   
+[40ms,   80ms]   0    0.00%   
+[80ms,   125ms]  0    0.00%   
+[125ms,  200ms]  0    0.00%   
+[200ms,  +Inf]   0    0.00%   
+=============================================
+[Platform: Apollo & Prisma]
+[Query: artist_by_id]
+Requests      [total, rate, throughput]         500, 100.20, 100.15
+Duration      [total, attack, wait]             4.993s, 4.99s, 2.74ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  2.159ms, 3.385ms, 2.973ms, 4.723ms, 6.609ms, 7.512ms, 16.863ms
+Bytes In      [total, mean]                     30000, 60.00
+Bytes Out     [total, mean]                     29000, 58.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:500  
+Error Set:
+=============================================
+Bucket           #    %       Histogram
+[0s,     2ms]    0    0.00%   
+[2ms,    4ms]    427  85.40%  ################################################################
+[4ms,    6ms]    38   7.60%   #####
+[6ms,    8ms]    31   6.20%   ####
+[8ms,    10ms]   1    0.20%   
+[10ms,   15ms]   1    0.20%   
+[15ms,   20ms]   2    0.40%   
+[20ms,   40ms]   0    0.00%   
+[40ms,   80ms]   0    0.00%   
+[80ms,   125ms]  0    0.00%   
+[125ms,  200ms]  0    0.00%   
+[200ms,  +Inf]   0    0.00%   
+=============================================
+[Platform: Hasura]
+[Query: artist_by_id]
+Requests      [total, rate, throughput]         500, 100.20, 100.19
+Duration      [total, attack, wait]             4.991s, 4.99s, 795.979µs
+Latencies     [min, mean, 50, 90, 95, 99, max]  627.829µs, 1.213ms, 1.028ms, 2.04ms, 2.17ms, 2.563ms, 4.007ms
+Bytes In      [total, mean]                     27500, 55.00
+Bytes Out     [total, mean]                     49000, 98.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:500  
+Error Set:
+=============================================
+Bucket           #    %       Histogram
+[0s,     2ms]    441  88.20%  ##################################################################
+[2ms,    4ms]    58   11.60%  ########
+[4ms,    6ms]    1    0.20%   
+[6ms,    8ms]    0    0.00%   
+[8ms,    10ms]   0    0.00%   
+[10ms,   15ms]   0    0.00%   
+[15ms,   20ms]   0    0.00%   
+[20ms,   40ms]   0    0.00%   
+[40ms,   80ms]   0    0.00%   
+[80ms,   125ms]  0    0.00%   
+[125ms,  200ms]  0    0.00%   
+[200ms,  +Inf]   0    0.00% 
+    </pre>
+  </body>
+</html>
+<style>
+  pre,
+  code {
+    font-family: Menlo, Monaco, 'Courier New', monospace;
+  }
+
+  pre {
+    padding: 0.5rem;
+    line-height: 1.25;
+    overflow-x: scroll;
+  }
+
+  @media print {
+    *,
+    *:before,
+    *:after {
+      background: transparent !important;
+      color: #000 !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+      text-decoration: underline;
+    }
+
+    a[href]:after {
+      content: ' (' attr(href) ')';
+    }
+
+    abbr[title]:after {
+      content: ' (' attr(title) ')';
+    }
+
+    a[href^='#']:after,
+    a[href^='javascript:']:after {
+      content: '';
+    }
+
+    pre,
+    blockquote {
+      border: 1px solid #999;
+      page-break-inside: avoid;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
+    tr,
+    img {
+      page-break-inside: avoid;
+    }
+
+    img {
+      max-width: 100% !important;
+    }
+
+    p,
+    h2,
+    h3 {
+      orphans: 3;
+      widows: 3;
+    }
+
+    h2,
+    h3 {
+      page-break-after: avoid;
+    }
+  }
+
+  a,
+  a:visited {
+    color: #1cd3c6;
+  }
+
+  a:hover,
+  a:focus,
+  a:active {
+    color: #1cd3dc;
+  }
+
+  .retro-no-decoration {
+    text-decoration: none;
+  }
+
+  html {
+    font-size: 12px;
+  }
+
+  @media screen and (min-width: 32rem) and (max-width: 48rem) {
+    html {
+      font-size: 15px;
+    }
+  }
+
+  @media screen and (min-width: 48rem) {
+    html {
+      font-size: 16px;
+    }
+  }
+
+  body {
+    line-height: 1.85;
+  }
+
+  p,
+  .retro-p {
+    font-size: 1rem;
+    margin-bottom: 1.3rem;
+  }
+
+  h1,
+  .retro-h1,
+  h2,
+  .retro-h2,
+  h3,
+  .retro-h3,
+  h4,
+  .retro-h4 {
+    margin: 1.414rem 0 0.5rem;
+    font-weight: inherit;
+    line-height: 1.42;
+  }
+
+  h1,
+  .retro-h1 {
+    margin-top: 0;
+    font-size: 3.998rem;
+  }
+
+  h2,
+  .retro-h2 {
+    font-size: 2.827rem;
+  }
+
+  h3,
+  .retro-h3 {
+    font-size: 1.999rem;
+  }
+
+  h4,
+  .retro-h4 {
+    font-size: 1.414rem;
+  }
+
+  h5,
+  .retro-h5 {
+    font-size: 1.121rem;
+  }
+
+  h6,
+  .retro-h6 {
+    font-size: 0.88rem;
+  }
+
+  small,
+  .retro-small {
+    font-size: 0.707em;
+  }
+
+  /* https://github.com/mrmrs/fluidity */
+
+  img,
+  canvas,
+  iframe,
+  video,
+  svg,
+  select,
+  textarea {
+    max-width: 100%;
+  }
+
+  html,
+  body {
+    background-color: #222;
+    min-height: 100%;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    color: #fafafa;
+    font-family: 'Courier New';
+    line-height: 1.45;
+    margin: 6rem auto 1rem;
+    max-width: 75rem;
+    padding: 0.25rem;
+  }
+
+  pre {
+    background-color: #333;
+  }
+
+  blockquote {
+    border-left: 3px solid #01ff70;
+    padding-left: 1rem;
+  }
+</style>

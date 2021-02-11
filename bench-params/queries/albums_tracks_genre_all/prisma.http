@@ -1,0 +1,2 @@
+POST http://localhost:8081/graphql
+@./queries/albums_tracks_genre_all/prisma.json

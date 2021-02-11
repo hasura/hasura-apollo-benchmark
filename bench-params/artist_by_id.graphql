@@ -1,0 +1,6 @@
+query {
+  artist_by_id {
+    artistid
+    name
+  }
+}

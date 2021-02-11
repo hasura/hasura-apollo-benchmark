@@ -1,0 +1,3 @@
+{
+  "query": "query artists_collaboration {    artist(     where: { albums: { tracks: { composer: { _eq: \"Ludwig van Beethoven\" } } } }    ) {     artistid     name    }   }"
+}

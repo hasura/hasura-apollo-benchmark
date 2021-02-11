@@ -1,0 +1,13 @@
+query {
+  albums_tracks_genre_some {
+    albumid
+    title
+    tracks {
+      trackid
+      name
+      genre {
+        name
+      }
+    }
+  }
+}

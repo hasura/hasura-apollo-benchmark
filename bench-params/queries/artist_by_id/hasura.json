@@ -1,0 +1,3 @@
+{
+  "query": "query artist_by_id { artist(where: { artistid: { _eq: 3 } }) { artistid name } }"
+}

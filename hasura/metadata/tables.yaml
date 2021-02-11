@@ -1,0 +1,159 @@
+- table:
+    schema: public
+    name: album
+  object_relationships:
+  - name: artist
+    using:
+      foreign_key_constraint_on: artistid
+  array_relationships:
+  - name: tracks
+    using:
+      foreign_key_constraint_on:
+        column: albumid
+        table:
+          schema: public
+          name: track
+- table:
+    schema: public
+    name: artist
+  array_relationships:
+  - name: albums
+    using:
+      foreign_key_constraint_on:
+        column: artistid
+        table:
+          schema: public
+          name: album
+- table:
+    schema: public
+    name: customer
+  object_relationships:
+  - name: employee
+    using:
+      foreign_key_constraint_on: supportrepid
+  array_relationships:
+  - name: invoices
+    using:
+      foreign_key_constraint_on:
+        column: customerid
+        table:
+          schema: public
+          name: invoice
+- table:
+    schema: public
+    name: employee
+  object_relationships:
+  - name: employee
+    using:
+      foreign_key_constraint_on: reportsto
+  array_relationships:
+  - name: customers
+    using:
+      foreign_key_constraint_on:
+        column: supportrepid
+        table:
+          schema: public
+          name: customer
+  - name: employees
+    using:
+      foreign_key_constraint_on:
+        column: reportsto
+        table:
+          schema: public
+          name: employee
+- table:
+    schema: public
+    name: genre
+  array_relationships:
+  - name: tracks
+    using:
+      foreign_key_constraint_on:
+        column: genreid
+        table:
+          schema: public
+          name: track
+- table:
+    schema: public
+    name: invoice
+  object_relationships:
+  - name: customer
+    using:
+      foreign_key_constraint_on: customerid
+  array_relationships:
+  - name: invoicelines
+    using:
+      foreign_key_constraint_on:
+        column: invoiceid
+        table:
+          schema: public
+          name: invoiceline
+- table:
+    schema: public
+    name: invoiceline
+  object_relationships:
+  - name: invoice
+    using:
+      foreign_key_constraint_on: invoiceid
+  - name: track
+    using:
+      foreign_key_constraint_on: trackid
+- table:
+    schema: public
+    name: mediatype
+  array_relationships:
+  - name: tracks
+    using:
+      foreign_key_constraint_on:
+        column: mediatypeid
+        table:
+          schema: public
+          name: track
+- table:
+    schema: public
+    name: playlist
+  array_relationships:
+  - name: playlisttracks
+    using:
+      foreign_key_constraint_on:
+        column: playlistid
+        table:
+          schema: public
+          name: playlisttrack
+- table:
+    schema: public
+    name: playlisttrack
+  object_relationships:
+  - name: playlist
+    using:
+      foreign_key_constraint_on: playlistid
+  - name: track
+    using:
+      foreign_key_constraint_on: trackid
+- table:
+    schema: public
+    name: track
+  object_relationships:
+  - name: album
+    using:
+      foreign_key_constraint_on: albumid
+  - name: genre
+    using:
+      foreign_key_constraint_on: genreid
+  - name: mediatype
+    using:
+      foreign_key_constraint_on: mediatypeid
+  array_relationships:
+  - name: invoicelines
+    using:
+      foreign_key_constraint_on:
+        column: trackid
+        table:
+          schema: public
+          name: invoiceline
+  - name: playlisttracks
+    using:
+      foreign_key_constraint_on:
+        column: trackid
+        table:
+          schema: public
+          name: playlisttrack
