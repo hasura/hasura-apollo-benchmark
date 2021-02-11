@@ -31,9 +31,12 @@ cat bench-params/queries/albums_tracks_genre_some/results/hasura_results.bin | v
 
 The `body` is JWT Encoded but the contents can be read by pasting into jwt.io without a key
 
-### Sample Benchmark Report
+### Benchmark Report
 
-**10 req/s, single Hasura v1.2.0 vs 16 x Load Balanced Apollo + Knex instances**
+Setup:
+- 10 req/s
+- Hasura: Single instance v1.2
+- Apollo: 16x load-balanced instances
 
 > Note: Attempting to run higher req/s may cause Node V8 to segfault from large JSON responses returned and serialized + served as web response I/O
 
