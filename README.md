@@ -6,16 +6,6 @@
 
   - `docker-compose up -d`
 
-- Seed Database
-
-  - `./seed-chinook-db.sh`
-    - `chmod +x seed-chinook-db.sh`
-
-- Build the `graphql-bench` Image
-
-  - `cd graphql-bench`
-  - `docker build --tag graphql-bench:1.0 .`
-
 - Run the Benchmark:
 
   - `cd ../bench-params`
@@ -24,9 +14,7 @@
 
 - Look at results, generate reports:
   - `./print-benchmark-results.sh` (pass -v to see HDR Plots, default is Text + Histogram)
-    - `chmod +x` if required
   - `./generate-html-charts.sh`
-    - `chmod +x` if required
   - Check `bench-params/charts` for a directory of HTML files containing comparison reports
 
 Note: Test results by default are stored as gob-encoded binary data files under `bench-params/queries/[query name]/results`, you can pipe these through `vegeta encode` to convert to JSON or CSV if interested in detailed results.
@@ -45,69 +33,21 @@ The `body` is JWT Encoded but the contents can be read by pasting into jwt.io wi
 
 ### Sample Benchmark Report
 
+**10 req/s, single Hasura v1.2.0 vs 16 x Load Balanced Apollo + Knex instances**
+
+> Note: Attempting to run higher req/s may cause Node V8 to segfault from large JSON responses returned and serialized + served as web response I/O
+
 ```
 =============================================
 [Platform: Apollo & Knex]
 [Query: albums_tracks_genre_all]
-Requests      [total, rate, throughput]         500, 100.20, 0.14
-Duration      [total, attack, wait]             34.99s, 4.99s, 30s
-Latencies     [min, mean, 50, 90, 95, 99, max]  7.169s, 29.782s, 30s, 30s, 30s, 30.002s, 30.003s
-Bytes In      [total, mean]                     1318550, 2637.10
-Bytes Out     [total, mean]                     570, 1.14
-Success       [ratio]                           1.00%
-Status Codes  [code:count]                      0:495  200:5
-Error Set:
-net/http: request canceled (Client.Timeout exceeded while reading body)
-Post http://localhost:8081/graphql: net/http: request canceled (Client.Timeout exceeded while awaiting headers)
-=============================================
-Bucket           #    %        Histogram
-[0s,     2ms]    0    0.00%
-[2ms,    4ms]    0    0.00%
-[4ms,    6ms]    0    0.00%
-[6ms,    8ms]    0    0.00%
-[8ms,    10ms]   0    0.00%
-[10ms,   15ms]   0    0.00%
-[15ms,   20ms]   0    0.00%
-[20ms,   40ms]   0    0.00%
-[40ms,   80ms]   0    0.00%
-[80ms,   125ms]  0    0.00%
-[125ms,  200ms]  0    0.00%
-[200ms,  +Inf]   500  100.00%  ###########################################################################
-=============================================
-[Platform: Hasura]
-[Query: albums_tracks_genre_all]
-Requests      [total, rate, throughput]         500, 100.20, 99.99
-Duration      [total, attack, wait]             5.001s, 4.99s, 10.758ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  9.704ms, 11.046ms, 10.689ms, 12.37ms, 14.185ms, 15.354ms, 21.15ms
-Bytes In      [total, mean]                     133605500, 267211.00
-Bytes Out     [total, mean]                     57000, 114.00
+Requests      [total, rate, throughput]         20, 10.53, 2.17
+Duration      [total, attack, wait]             9.22s, 1.9s, 7.321s
+Latencies     [min, mean, 50, 90, 95, 99, max]  15.554ms, 3.535s, 1.534s, 8.601s, 8.623s, 8.625s, 8.625s
+Bytes In      [total, mean]                     4091205, 204560.25
+Bytes Out     [total, mean]                     2280, 114.00
 Success       [ratio]                           100.00%
-Status Codes  [code:count]                      200:500
-Error Set:
-=============================================
-Bucket           #    %       Histogram
-[0s,     2ms]    0    0.00%
-[2ms,    4ms]    0    0.00%
-[4ms,    6ms]    0    0.00%
-[6ms,    8ms]    0    0.00%
-[8ms,    10ms]   60   12.00%  #########
-[10ms,   15ms]   433  86.60%  ################################################################
-[15ms,   20ms]   6    1.20%
-[20ms,   40ms]   1    0.20%
-[40ms,   80ms]   0    0.00%
-[80ms,   125ms]  0    0.00%
-[125ms,  200ms]  0    0.00%
-[200ms,  +Inf]   0    0.00%
-=============================================
-[Platform: Apollo & Knex]
-[Query: albums_tracks_genre_some]
-Requests      [total, rate, throughput]         150, 30.20, 30.11
-Duration      [total, attack, wait]             4.982s, 4.967s, 15.223ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  12.256ms, 22.425ms, 15.323ms, 33.579ms, 48.945ms, 159.844ms, 189.38ms
-Bytes In      [total, mean]                     533100, 3554.00
-Bytes Out     [total, mean]                     16500, 110.00
-Success       [ratio]                           100.00%
-Status Codes  [code:count]                      200:150
+Status Codes  [code:count]                      200:20
 Error Set:
 =============================================
 Bucket           #   %       Histogram
@@ -116,59 +56,109 @@ Bucket           #   %       Histogram
 [4ms,    6ms]    0   0.00%
 [6ms,    8ms]    0   0.00%
 [8ms,    10ms]   0   0.00%
-[10ms,   15ms]   70  46.67%  ###################################
-[15ms,   20ms]   44  29.33%  ######################
-[20ms,   40ms]   26  17.33%  #############
-[40ms,   80ms]   5   3.33%   ##
-[80ms,   125ms]  3   2.00%   #
-[125ms,  200ms]  2   1.33%   #
-[200ms,  +Inf]   0   0.00%
+[10ms,   15ms]   0   0.00%
+[15ms,   20ms]   5   25.00%  ##################
+[20ms,   40ms]   5   25.00%  ##################
+[40ms,   80ms]   0   0.00%
+[80ms,   125ms]  0   0.00%
+[125ms,  200ms]  0   0.00%
+[200ms,  +Inf]   10  50.00%  #####################################
 =============================================
 [Platform: Hasura]
-[Query: albums_tracks_genre_some]
-Requests      [total, rate, throughput]         500, 100.20, 100.16
-Duration      [total, attack, wait]             4.992s, 4.99s, 2.118ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  824.376µs, 1.87ms, 1.802ms, 2.775ms, 3.933ms, 5.754ms, 10.412ms
-Bytes In      [total, mean]                     1790500, 3581.00
-Bytes Out     [total, mean]                     77000, 154.00
+[Query: albums_tracks_genre_all]
+Requests      [total, rate, throughput]         20, 10.53, 10.43
+Duration      [total, attack, wait]             1.918s, 1.9s, 18.105ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  17.111ms, 19.481ms, 18.607ms, 23.467ms, 25.397ms, 25.444ms, 25.444ms
+Bytes In      [total, mean]                     5344220, 267211.00
+Bytes Out     [total, mean]                     2280, 114.00
 Success       [ratio]                           100.00%
-Status Codes  [code:count]                      200:500
-Error Set:
-=============================================
-Bucket           #    %       Histogram
-[0s,     2ms]    362  72.40%  ######################################################
-[2ms,    4ms]    113  22.60%  ################
-[4ms,    6ms]    24   4.80%   ###
-[6ms,    8ms]    0    0.00%
-[8ms,    10ms]   0    0.00%
-[10ms,   15ms]   1    0.20%
-[15ms,   20ms]   0    0.00%
-[20ms,   40ms]   0    0.00%
-[40ms,   80ms]   0    0.00%
-[80ms,   125ms]  0    0.00%
-[125ms,  200ms]  0    0.00%
-[200ms,  +Inf]   0    0.00%
-=============================================
-[Platform: Apollo & Knex]
-[Query: artists_collaboration]
-Requests      [total, rate, throughput]         150, 30.20, 30.17
-Duration      [total, attack, wait]             4.971s, 4.967s, 4.621ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  3.217ms, 6.085ms, 4.763ms, 10.561ms, 11.09ms, 16.415ms, 32.305ms
-Bytes In      [total, mean]                     53550, 357.00
-Bytes Out     [total, mean]                     13350, 89.00
-Success       [ratio]                           100.00%
-Status Codes  [code:count]                      200:150
+Status Codes  [code:count]                      200:20
 Error Set:
 =============================================
 Bucket           #   %       Histogram
 [0s,     2ms]    0   0.00%
-[2ms,    4ms]    35  23.33%  #################
-[4ms,    6ms]    67  44.67%  #################################
-[6ms,    8ms]    15  10.00%  #######
-[8ms,    10ms]   15  10.00%  #######
-[10ms,   15ms]   15  10.00%  #######
-[15ms,   20ms]   2   1.33%   #
-[20ms,   40ms]   1   0.67%
+[2ms,    4ms]    0   0.00%
+[4ms,    6ms]    0   0.00%
+[6ms,    8ms]    0   0.00%
+[8ms,    10ms]   0   0.00%
+[10ms,   15ms]   0   0.00%
+[15ms,   20ms]   15  75.00%  ########################################################
+[20ms,   40ms]   5   25.00%  ##################
+[40ms,   80ms]   0   0.00%
+[80ms,   125ms]  0   0.00%
+[125ms,  200ms]  0   0.00%
+[200ms,  +Inf]   0   0.00%
+=============================================
+[Platform: Apollo & Knex]
+[Query: albums_tracks_genre_some]
+Requests      [total, rate, throughput]         20, 10.53, 1.61
+Duration      [total, attack, wait]             12.4s, 1.9s, 10.499s
+Latencies     [min, mean, 50, 90, 95, 99, max]  19.1ms, 5.887s, 4.489s, 11.726s, 11.738s, 11.744s, 11.744s
+Bytes In      [total, mean]                     4760488, 238024.40
+Bytes Out     [total, mean]                     2280, 114.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:20
+Error Set:
+=============================================
+Bucket           #   %       Histogram
+[0s,     2ms]    0   0.00%
+[2ms,    4ms]    0   0.00%
+[4ms,    6ms]    0   0.00%
+[6ms,    8ms]    0   0.00%
+[8ms,    10ms]   0   0.00%
+[10ms,   15ms]   0   0.00%
+[15ms,   20ms]   1   5.00%   ###
+[20ms,   40ms]   4   20.00%  ###############
+[40ms,   80ms]   1   5.00%   ###
+[80ms,   125ms]  2   10.00%  #######
+[125ms,  200ms]  0   0.00%
+[200ms,  +Inf]   12  60.00%  #############################################
+=============================================
+[Platform: Hasura]
+[Query: albums_tracks_genre_some]
+Requests      [total, rate, throughput]         20, 10.53, 10.51
+Duration      [total, attack, wait]             1.902s, 1.9s, 2.449ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  2.241ms, 4.159ms, 3.456ms, 6.819ms, 9.474ms, 10.744ms, 10.744ms
+Bytes In      [total, mean]                     71620, 3581.00
+Bytes Out     [total, mean]                     3080, 154.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:20
+Error Set:
+=============================================
+Bucket           #   %       Histogram
+[0s,     2ms]    0   0.00%
+[2ms,    4ms]    13  65.00%  ################################################
+[4ms,    6ms]    5   25.00%  ##################
+[6ms,    8ms]    0   0.00%
+[8ms,    10ms]   1   5.00%   ###
+[10ms,   15ms]   1   5.00%   ###
+[15ms,   20ms]   0   0.00%
+[20ms,   40ms]   0   0.00%
+[40ms,   80ms]   0   0.00%
+[80ms,   125ms]  0   0.00%
+[125ms,  200ms]  0   0.00%
+[200ms,  +Inf]   0   0.00%
+=============================================
+[Platform: Apollo & Knex]
+[Query: artists_collaboration]
+Requests      [total, rate, throughput]         20, 10.53, 10.49
+Duration      [total, attack, wait]             1.907s, 1.9s, 7.196ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  5.397ms, 8.28ms, 6.826ms, 8.512ms, 21.309ms, 33.962ms, 33.962ms
+Bytes In      [total, mean]                     16500, 825.00
+Bytes Out     [total, mean]                     2280, 114.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:20
+Error Set:
+=============================================
+Bucket           #   %       Histogram
+[0s,     2ms]    0   0.00%
+[2ms,    4ms]    0   0.00%
+[4ms,    6ms]    3   15.00%  ###########
+[6ms,    8ms]    13  65.00%  ################################################
+[8ms,    10ms]   3   15.00%  ###########
+[10ms,   15ms]   0   0.00%
+[15ms,   20ms]   0   0.00%
+[20ms,   40ms]   1   5.00%   ###
 [40ms,   80ms]   0   0.00%
 [80ms,   125ms]  0   0.00%
 [125ms,  200ms]  0   0.00%
@@ -176,177 +166,176 @@ Bucket           #   %       Histogram
 =============================================
 [Platform: Hasura]
 [Query: artists_collaboration]
-Requests      [total, rate, throughput]         500, 100.20, 100.17
-Duration      [total, attack, wait]             4.991s, 4.99s, 1.302ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  996.824µs, 1.498ms, 1.301ms, 2.188ms, 2.651ms, 3.88ms, 4.469ms
-Bytes In      [total, mean]                     172500, 345.00
-Bytes Out     [total, mean]                     89500, 179.00
+Requests      [total, rate, throughput]         20, 10.53, 10.51
+Duration      [total, attack, wait]             1.903s, 1.9s, 3.493ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  2.906ms, 3.56ms, 3.488ms, 4.277ms, 4.843ms, 5.002ms, 5.002ms
+Bytes In      [total, mean]                     6900, 345.00
+Bytes Out     [total, mean]                     3580, 179.00
 Success       [ratio]                           100.00%
-Status Codes  [code:count]                      200:500
+Status Codes  [code:count]                      200:20
 Error Set:
 =============================================
-Bucket           #    %       Histogram
-[0s,     2ms]    445  89.00%  ##################################################################
-[2ms,    4ms]    50   10.00%  #######
-[4ms,    6ms]    5    1.00%
-[6ms,    8ms]    0    0.00%
-[8ms,    10ms]   0    0.00%
-[10ms,   15ms]   0    0.00%
-[15ms,   20ms]   0    0.00%
-[20ms,   40ms]   0    0.00%
-[40ms,   80ms]   0    0.00%
-[80ms,   125ms]  0    0.00%
-[125ms,  200ms]  0    0.00%
-[200ms,  +Inf]   0    0.00%
+Bucket           #   %       Histogram
+[0s,     2ms]    0   0.00%
+[2ms,    4ms]    18  90.00%  ###################################################################
+[4ms,    6ms]    2   10.00%  #######
+[6ms,    8ms]    0   0.00%
+[8ms,    10ms]   0   0.00%
+[10ms,   15ms]   0   0.00%
+[15ms,   20ms]   0   0.00%
+[20ms,   40ms]   0   0.00%
+[40ms,   80ms]   0   0.00%
+[80ms,   125ms]  0   0.00%
+[125ms,  200ms]  0   0.00%
+[200ms,  +Inf]   0   0.00%
 =============================================
 [Platform: Apollo & Knex]
 [Query: tracks_media_all]
-Requests      [total, rate, throughput]         500, 100.20, 0.11
-Duration      [total, attack, wait]             34.99s, 4.99s, 30s
-Latencies     [min, mean, 50, 90, 95, 99, max]  1.913s, 29.776s, 30s, 30s, 30s, 30s, 30.005s
-Bytes In      [total, mean]                     1163612, 2327.22
-Bytes Out     [total, mean]                     328, 0.66
-Success       [ratio]                           0.80%
-Status Codes  [code:count]                      0:496  200:4
+Requests      [total, rate, throughput]         20, 10.53, 10.50
+Duration      [total, attack, wait]             1.906s, 1.9s, 6.032ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  5.577ms, 7.392ms, 7.089ms, 8.225ms, 13.269ms, 18.145ms, 18.145ms
+Bytes In      [total, mean]                     16500, 825.00
+Bytes Out     [total, mean]                     1640, 82.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:20
 Error Set:
-Post http://localhost:8081/graphql: net/http: request canceled (Client.Timeout exceeded while awaiting headers)
 =============================================
-Bucket           #    %        Histogram
-[0s,     2ms]    0    0.00%
-[2ms,    4ms]    0    0.00%
-[4ms,    6ms]    0    0.00%
-[6ms,    8ms]    0    0.00%
-[8ms,    10ms]   0    0.00%
-[10ms,   15ms]   0    0.00%
-[15ms,   20ms]   0    0.00%
-[20ms,   40ms]   0    0.00%
-[40ms,   80ms]   0    0.00%
-[80ms,   125ms]  0    0.00%
-[125ms,  200ms]  0    0.00%
-[200ms,  +Inf]   500  100.00%  ###########################################################################
+Bucket           #   %       Histogram
+[0s,     2ms]    0   0.00%
+[2ms,    4ms]    0   0.00%
+[4ms,    6ms]    3   15.00%  ###########
+[6ms,    8ms]    14  70.00%  ####################################################
+[8ms,    10ms]   2   10.00%  #######
+[10ms,   15ms]   0   0.00%
+[15ms,   20ms]   1   5.00%   ###
+[20ms,   40ms]   0   0.00%
+[40ms,   80ms]   0   0.00%
+[80ms,   125ms]  0   0.00%
+[125ms,  200ms]  0   0.00%
+[200ms,  +Inf]   0   0.00%
 =============================================
 [Platform: Hasura]
 [Query: tracks_media_all]
-Requests      [total, rate, throughput]         500, 100.20, 100.01
-Duration      [total, attack, wait]             5s, 4.99s, 9.594ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  8.139ms, 12.931ms, 11.458ms, 18.532ms, 20.969ms, 28.793ms, 42.598ms
-Bytes In      [total, mean]                     147202000, 294404.00
-Bytes Out     [total, mean]                     41000, 82.00
+Requests      [total, rate, throughput]         20, 10.53, 10.46
+Duration      [total, attack, wait]             1.912s, 1.9s, 12.186ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  10.504ms, 11.923ms, 11.925ms, 13.252ms, 13.317ms, 13.359ms, 13.359ms
+Bytes In      [total, mean]                     5888080, 294404.00
+Bytes Out     [total, mean]                     1640, 82.00
 Success       [ratio]                           100.00%
-Status Codes  [code:count]                      200:500
+Status Codes  [code:count]                      200:20
 Error Set:
 =============================================
-Bucket           #    %       Histogram
-[0s,     2ms]    0    0.00%
-[2ms,    4ms]    0    0.00%
-[4ms,    6ms]    0    0.00%
-[6ms,    8ms]    0    0.00%
-[8ms,    10ms]   138  27.60%  ####################
-[10ms,   15ms]   241  48.20%  ####################################
-[15ms,   20ms]   88   17.60%  #############
-[20ms,   40ms]   32   6.40%   ####
-[40ms,   80ms]   1    0.20%
-[80ms,   125ms]  0    0.00%
-[125ms,  200ms]  0    0.00%
-[200ms,  +Inf]   0    0.00%
+Bucket           #   %        Histogram
+[0s,     2ms]    0   0.00%
+[2ms,    4ms]    0   0.00%
+[4ms,    6ms]    0   0.00%
+[6ms,    8ms]    0   0.00%
+[8ms,    10ms]   0   0.00%
+[10ms,   15ms]   20  100.00%  ###########################################################################
+[15ms,   20ms]   0   0.00%
+[20ms,   40ms]   0   0.00%
+[40ms,   80ms]   0   0.00%
+[80ms,   125ms]  0   0.00%
+[125ms,  200ms]  0   0.00%
+[200ms,  +Inf]   0   0.00%
 =============================================
 [Platform: Apollo & Knex]
 [Query: tracks_media_some]
-Requests      [total, rate, throughput]         500, 100.20, 94.85
-Duration      [total, attack, wait]             5.272s, 4.99s, 281.92ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  39.978ms, 450.96ms, 459.866ms, 678.401ms, 720.788ms, 787.893ms, 837.117ms
-Bytes In      [total, mean]                     1805000, 3610.00
-Bytes Out     [total, mean]                     61000, 122.00
+Requests      [total, rate, throughput]         20, 10.53, 10.26
+Duration      [total, attack, wait]             1.949s, 1.9s, 48.912ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  48.912ms, 59.495ms, 56.722ms, 69.376ms, 71.971ms, 74.388ms, 74.388ms
+Bytes In      [total, mean]                     75960, 3798.00
+Bytes Out     [total, mean]                     2440, 122.00
 Success       [ratio]                           100.00%
-Status Codes  [code:count]                      200:500
+Status Codes  [code:count]                      200:20
 Error Set:
 =============================================
-Bucket           #    %       Histogram
-[0s,     2ms]    0    0.00%
-[2ms,    4ms]    0    0.00%
-[4ms,    6ms]    0    0.00%
-[6ms,    8ms]    0    0.00%
-[8ms,    10ms]   0    0.00%
-[10ms,   15ms]   0    0.00%
-[15ms,   20ms]   0    0.00%
-[20ms,   40ms]   1    0.20%
-[40ms,   80ms]   13   2.60%   #
-[80ms,   125ms]  8    1.60%   #
-[125ms,  200ms]  30   6.00%   ####
-[200ms,  +Inf]   448  89.60%  ###################################################################
+Bucket           #   %        Histogram
+[0s,     2ms]    0   0.00%
+[2ms,    4ms]    0   0.00%
+[4ms,    6ms]    0   0.00%
+[6ms,    8ms]    0   0.00%
+[8ms,    10ms]   0   0.00%
+[10ms,   15ms]   0   0.00%
+[15ms,   20ms]   0   0.00%
+[20ms,   40ms]   0   0.00%
+[40ms,   80ms]   20  100.00%  ###########################################################################
+[80ms,   125ms]  0   0.00%
+[125ms,  200ms]  0   0.00%
+[200ms,  +Inf]   0   0.00%
 =============================================
 [Platform: Hasura]
 [Query: tracks_media_some]
-Requests      [total, rate, throughput]         500, 100.20, 100.16
-Duration      [total, attack, wait]             4.992s, 4.99s, 2.283ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  1.205ms, 2.289ms, 1.961ms, 3.66ms, 4.521ms, 6.955ms, 11.491ms
-Bytes In      [total, mean]                     1811000, 3622.00
-Bytes Out     [total, mean]                     76500, 153.00
+Requests      [total, rate, throughput]         20, 10.53, 10.50
+Duration      [total, attack, wait]             1.905s, 1.9s, 5.354ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  3.173ms, 4.838ms, 5.027ms, 5.903ms, 6.619ms, 6.965ms, 6.965ms
+Bytes In      [total, mean]                     72440, 3622.00
+Bytes Out     [total, mean]                     3060, 153.00
 Success       [ratio]                           100.00%
-Status Codes  [code:count]                      200:500
+Status Codes  [code:count]                      200:20
 Error Set:
 =============================================
-Bucket           #    %       Histogram
-[0s,     2ms]    257  51.40%  ######################################
-[2ms,    4ms]    200  40.00%  ##############################
-[4ms,    6ms]    30   6.00%   ####
-[6ms,    8ms]    12   2.40%   #
-[8ms,    10ms]   0    0.00%
-[10ms,   15ms]   1    0.20%
-[15ms,   20ms]   0    0.00%
-[20ms,   40ms]   0    0.00%
-[40ms,   80ms]   0    0.00%
-[80ms,   125ms]  0    0.00%
-[125ms,  200ms]  0    0.00%
-[200ms,  +Inf]   0    0.00%
+Bucket           #   %       Histogram
+[0s,     2ms]    0   0.00%
+[2ms,    4ms]    4   20.00%  ###############
+[4ms,    6ms]    14  70.00%  ####################################################
+[6ms,    8ms]    2   10.00%  #######
+[8ms,    10ms]   0   0.00%
+[10ms,   15ms]   0   0.00%
+[15ms,   20ms]   0   0.00%
+[20ms,   40ms]   0   0.00%
+[40ms,   80ms]   0   0.00%
+[80ms,   125ms]  0   0.00%
+[125ms,  200ms]  0   0.00%
+[200ms,  +Inf]   0   0.00%
 =============================================
 [Platform: Apollo & Knex]
 [Query: artist_by_id]
-Requests      [total, rate, throughput]         500, 100.20, 100.15
-Duration      [total, attack, wait]             4.993s, 4.99s, 2.74ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  2.159ms, 3.385ms, 2.973ms, 4.723ms, 6.609ms, 7.512ms, 16.863ms
-Bytes In      [total, mean]                     30000, 60.00
-Bytes Out     [total, mean]                     29000, 58.00
+Requests      [total, rate, throughput]         20, 10.53, 10.50
+Duration      [total, attack, wait]             1.904s, 1.9s, 4.368ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  4.158ms, 4.913ms, 4.558ms, 6.226ms, 7.978ms, 8.608ms, 8.608ms
+Bytes In      [total, mean]                     1240, 62.00
+Bytes Out     [total, mean]                     1160, 58.00
 Success       [ratio]                           100.00%
-Status Codes  [code:count]                      200:500
+Status Codes  [code:count]                      200:20
 Error Set:
 =============================================
-Bucket           #    %       Histogram
-[0s,     2ms]    0    0.00%
-[2ms,    4ms]    427  85.40%  ################################################################
-[4ms,    6ms]    38   7.60%   #####
-[6ms,    8ms]    31   6.20%   ####
-[8ms,    10ms]   1    0.20%
-[10ms,   15ms]   1    0.20%
-[15ms,   20ms]   2    0.40%
-[20ms,   40ms]   0    0.00%
-[40ms,   80ms]   0    0.00%
-[80ms,   125ms]  0    0.00%
-[125ms,  200ms]  0    0.00%
-[200ms,  +Inf]   0    0.00%
+Bucket           #   %       Histogram
+[0s,     2ms]    0   0.00%
+[2ms,    4ms]    0   0.00%
+[4ms,    6ms]    18  90.00%  ###################################################################
+[6ms,    8ms]    1   5.00%   ###
+[8ms,    10ms]   1   5.00%   ###
+[10ms,   15ms]   0   0.00%
+[15ms,   20ms]   0   0.00%
+[20ms,   40ms]   0   0.00%
+[40ms,   80ms]   0   0.00%
+[80ms,   125ms]  0   0.00%
+[125ms,  200ms]  0   0.00%
+[200ms,  +Inf]   0   0.00%
 =============================================
 [Platform: Hasura]
 [Query: artist_by_id]
-Requests      [total, rate, throughput]         500, 100.20, 100.19
-Duration      [total, attack, wait]             4.991s, 4.99s, 795.979µs
-Latencies     [min, mean, 50, 90, 95, 99, max]  627.829µs, 1.213ms, 1.028ms, 2.04ms, 2.17ms, 2.563ms, 4.007ms
-Bytes In      [total, mean]                     27500, 55.00
-Bytes Out     [total, mean]                     49000, 98.00
+Requests      [total, rate, throughput]         20, 10.53, 10.51
+Duration      [total, attack, wait]             1.903s, 1.9s, 2.509ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  2.058ms, 2.726ms, 2.664ms, 3.135ms, 3.693ms, 4.224ms, 4.224ms
+Bytes In      [total, mean]                     1100, 55.00
+Bytes Out     [total, mean]                     1960, 98.00
 Success       [ratio]                           100.00%
-Status Codes  [code:count]                      200:500
+Status Codes  [code:count]                      200:20
 Error Set:
 =============================================
-Bucket           #    %       Histogram
-[0s,     2ms]    441  88.20%  ##################################################################
-[2ms,    4ms]    58   11.60%  ########
-[4ms,    6ms]    1    0.20%
-[6ms,    8ms]    0    0.00%
-[8ms,    10ms]   0    0.00%
-[10ms,   15ms]   0    0.00%
-[15ms,   20ms]   0    0.00%
-[20ms,   40ms]   0    0.00%
-[40ms,   80ms]   0    0.00%
-[80ms,   125ms]  0    0.00%
-[125ms,  200ms]  0    0.00%
-[200ms,  +Inf]   0    0.00%
+Bucket           #   %       Histogram
+[0s,     2ms]    0   0.00%
+[2ms,    4ms]    19  95.00%  #######################################################################
+[4ms,    6ms]    1   5.00%   ###
+[6ms,    8ms]    0   0.00%
+[8ms,    10ms]   0   0.00%
+[10ms,   15ms]   0   0.00%
+[15ms,   20ms]   0   0.00%
+[20ms,   40ms]   0   0.00%
+[40ms,   80ms]   0   0.00%
+[80ms,   125ms]  0   0.00%
+[125ms,  200ms]  0   0.00%
+[200ms,  +Inf]   0   0.00%
 ```

@@ -10,7 +10,7 @@ done
 
 set_vegeta_binary_for_os() {
   if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    vegeta_bin=vegeta
+    vegeta_bin=./vegeta
   elif [[ "$OSTYPE" == "darwin"* ]]; then
     vegeta_bin=vegeta_darwin
   fi
@@ -29,12 +29,12 @@ for query_folder_name in  ${query_folders[@]}; do
   echo "[Platform: Apollo & Prisma]"
   echo "[Query: $query_folder_name]"
 
-  print_report $query_folder_name prisma_results text
+  print_report $query_folder_name knex_results text
   echo "============================================="
-  print_report $query_folder_name prisma_results $histogram
+  print_report $query_folder_name knex_results $histogram
   if [ "$verbose" = true ]; then
     echo "============================================="
-   print_report $query_folder_name prisma_results hdrplot
+   print_report $query_folder_name knex_results hdrplot
   fi
   echo "============================================="
   echo "[Platform: Hasura]"

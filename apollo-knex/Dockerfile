@@ -7,11 +7,12 @@ WORKDIR /usr/src/app
 # Install dependencies
 COPY package.json .
 COPY yarn.lock .
-RUN yarn
+RUN yarn && yarn global add pm2
 
 # Bundle app source
 COPY . .
 
 # Exports
 EXPOSE 4000
-CMD ["yarn", "nodemon", "server.js"]
+# Start with pm2 using max clustered workers
+CMD ["pm2-runtime", "start", "server.js", "-i", "max"]
